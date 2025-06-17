@@ -32,3 +32,21 @@ sudo systemctl start jira-flask
 
 now when you type /JIRA ijn commnmets and it will create jira and if you open ec2 as well you wont see any session open for this script. Since its running as systemd process
 sudo systemctl status jira-flask=----> by thius you can check the status.
+--------------------------------------------
+to check the logs of script getting requests???
+
+wher can i check the logs of this script getting requests
+Nice—you’re thinking like an ops engineer now. Since you’ve set up your Flask app as a systemd service (jira-flask), your logs are managed by the system’s journal. You can view all requests hitting your endpoint with:
+
+bash
+journalctl -u jira-flask -f
+That -f flag means "follow", like tail -f, so it’ll stream logs live as your app receives traffic.
+
+If you want to see the full history:
+
+bash
+journalctl -u jira-flask
+Or filter by a specific time window:
+
+bash
+journalctl -u jira-flask --since "30 minutes ago"
