@@ -1,0 +1,57 @@
+#only python script to create a jir issue automatically when you run this script
+# This code sample uses the 'requests' library:
+# http://docs.python-requests.org
+import requests
+from requests.auth import HTTPBasicAuth
+import json
+
+url = "https://jiradevops8.atlassian.net/rest/api/3/issue"
+
+API_TOKEN="ATATT3xFfGF0KT7L6ZuHbuvK-A78KVyxMkClMeJ2RAasZZhYJMbrRW8iU6o6IdWcIqza3goF6dxjMTrDE9le6H-9MLUK0_ZWBSH4VJt_mWGK3rE0=16157AF1"
+
+auth = HTTPBasicAuth("adityakalepalli@gmail.com", API_TOKEN)
+
+
+headers = {
+  "Accept": "application/json",
+  "Content-Type": "application/json"
+}
+
+payload = json.dumps( {
+  "fields": {
+    "description": {
+      "content": [
+        {
+          "content": [
+            {
+              "text": "My first jira ticket",
+              "type": "text"
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "type": "doc",
+      "version": 1
+    },
+    "issuetype": {
+      "id": "10004"
+
+    },
+    "project": {
+      "key": "SCRUM"
+    },
+    "summary": "First JIRA ticket"
+  },
+  "update": {}
+} )
+
+response = requests.request(
+   "POST",
+   url,
+   data=payload,
+   headers=headers,
+   auth=auth
+)
+
+print(json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": ")))
